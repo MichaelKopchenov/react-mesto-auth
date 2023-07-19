@@ -1,25 +1,43 @@
 import React, { useState, useEffect } from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
-import AddPlacePopup from './AddPlacePopup'
+import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
+import PopupWithForm from './PopupWithForm';
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
+import InfoToolTip from './InfoToolTip';
+import * as auth from '../utils/auth.js';
 
-function App() {
+const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isPicturePopupOpen, setIsPicturePopupOpen] = useState(false)
+  const [isPicturePopupOpen, setIsPicturePopupOpen] = useState(false);
+  const [isRegisterPopupOpen, setIsRegisterPopupOpen] = useState(false);
+  const [registeredIn, setRegisteredIn] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [userData, setUserData] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem('token');
+
+  const registerText = registeredIn ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'
 
 useEffect(() => {
+  if (loggedIn) {
   Promise.all([api.getInitialCards(), api.getInitialProfile()])
     .then(([cards, dataOfUser]) => {
       setCards(cards);
@@ -28,13 +46,43 @@ useEffect(() => {
     .catch((err) => {
       console.log(`Что-то пошло не так загрузке начальных даных ${err}`)
     });
-}, [])
+  }
+}, [loggedIn]);
+
+useEffect(() => {
+  handleTokenCheck();
+}, []);
+
+const handleTokenCheck = () => {
+  if (token) {
+    auth.checkToken(token).then((res) => {
+      const userData = {
+        email: res.data.email,
+        password: res.data.password
+      };
+    setUserData(userData);
+    setLoggedIn(true);
+    navigate('/main', {replace: true})
+  })
+    .catch((err) => {console.log(err)}) 
+  }
+}
+
+function handleLogin(isLog) {
+  setLoggedIn(isLog);
+}
+
+function handleRegister(isReg) {
+  setIsRegisterPopupOpen(true);
+  setRegisteredIn(isReg);
+}
 
 function closeAllPopups() {
   setIsEditAvatarPopupOpen(false);
   setIsEditProfilePopupOpen(false);
   setIsAddPlacePopupOpen(false);
   setIsPicturePopupOpen(false);
+  setIsRegisterPopupOpen(false);
 };
 
 const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isPicturePopupOpen
@@ -51,7 +99,7 @@ useEffect(() => {
       document.removeEventListener('keydown', closeByEscape);
     }
   }
-}, [isOpen]) 
+}, [isOpen]);
 
 
 function handleEditProfileClick() {
@@ -149,17 +197,27 @@ function handleAddPlaceSubmit(data) {
 
 return (
   <CurrentUserContext.Provider value={currentUser}>
-    <Header/>
-
-    <Main 
-      cards={cards}
-      onEditProfile={handleEditProfileClick} 
-      onAddPlace={handleAddPlaceClick} 
-      onEditAvatar={handleEditAvatarClick} 
-      onCardClick = {handleCardClick}
-      onCardLike={handleCardLike}
-      onCardDelete={handleCardDelete}
-    />
+    <Header userData={userData} loggedIn={loggedIn} handleLogin={handleLogin} />
+    <Routes>
+      <Route path="/sign-in" element={<Login handleLogin={handleLogin} setUserData={setUserData} />} />
+      <Route path="/sign-up" element={<Register handleRegister={handleRegister} />} />
+      <Route path="/main" element={ <ProtectedRoute 
+        element={(props) => (
+          <Main
+          {...props}
+          cards={cards}
+          onEditProfile={handleEditProfileClick} 
+          onAddPlace={handleAddPlaceClick} 
+          onEditAvatar={handleEditAvatarClick} 
+          onCardClick = {handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          />
+        )}
+        loggedIn={loggedIn} />
+    }
+  />
+    </Routes>
 
     <Footer/>
 
@@ -188,6 +246,10 @@ return (
       isOpen={isPicturePopupOpen} 
       onClose={closeAllPopups}
     />
+
+    <PopupWithForm name="delete" title="Вы уверены?" buttonText="Да" />
+
+    <InfoToolTip registerText={registerText} registeredIn={registeredIn} isOpen={isRegisterPopupOpen} onClose={closeAllPopups} />
   </CurrentUserContext.Provider>
 );
 };
