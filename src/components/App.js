@@ -9,7 +9,6 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import CurrentUserContext from '../contexts/CurrentUserContext';
-import SaveContext from '../contexts/saveContext';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
@@ -205,42 +204,42 @@ const App = () => {
         handleLogin={ handleLogin } 
       />
       <HashRouter>
-      <Routes>
-        <Route 
-          path="/sign-in" 
-          element={ 
-            <Login 
-              handleLogin={ handleLogin } 
-              setUserData={ setUserData } 
-            /> 
-          } 
-        />
-        <Route 
-          path="/sign-up" 
-          element={ 
-            <Register handleRegister={ handleRegister } 
-            /> 
-          } 
-        />
-        <Route path="/" element={ <ProtectedRoute 
-          loggedIn={ loggedIn }
-          element={ (props) => (
-            <Main
-            { ...props }
-            cards={cards}
-            onEditProfile= {handleEditProfileClick } 
-            onAddPlace={ handleAddPlaceClick } 
-            onEditAvatar={ handleEditAvatarClick } 
-            onCardClick = { handleCardClick }
-            onCardLike={ handleCardLike }
-            onCardDelete={ handleCardDelete }
+        <Routes>
+          <Route 
+            path="/sign-in" 
+            element={ 
+              <Login 
+                handleLogin={ handleLogin } 
+                setUserData={ setUserData } 
+              /> 
+            } 
+          />
+          <Route 
+            path="/sign-up" 
+            element={ 
+              <Register handleRegister={ handleRegister } 
+              /> 
+            } 
+          />
+          <Route path="/" element={ <ProtectedRoute 
+            loggedIn={ loggedIn }
+            element={ (props) => (
+              <Main
+              { ...props }
+              cards={cards}
+              onEditProfile= {handleEditProfileClick } 
+              onAddPlace={ handleAddPlaceClick } 
+              onEditAvatar={ handleEditAvatarClick } 
+              onCardClick = { handleCardClick }
+              onCardLike={ handleCardLike }
+              onCardDelete={ handleCardDelete }
+              />
+            )}
             />
-          )}
-        />
-      }
-    />
-      </Routes>
-    </HashRouter>
+            }
+           />
+        </Routes>
+      </HashRouter>
 
       <Footer/>
 
