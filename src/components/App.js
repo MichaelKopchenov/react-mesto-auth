@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, HashRouter } from 'react-router-dom';
 import api from '../utils/api';
 import Header from './Header';
 import Main from './Main';
@@ -203,6 +203,7 @@ const App = () => {
         loggedIn={ loggedIn } 
         handleLogin={ handleLogin } 
       />
+      <HashRouter>
       <Routes>
         <Route 
           path="/sign-in" 
@@ -238,7 +239,7 @@ const App = () => {
       }
     />
       </Routes>
-
+    </HashRouter>
 
       <Footer/>
 
