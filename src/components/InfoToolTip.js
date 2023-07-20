@@ -1,14 +1,26 @@
-import iconYes from '../images/popup__icon_yes.svg';
-import iconNo from '../images/popup__icon_no.svg';
+import successIcon from '../images/success.svg';
+import failureIcon from '../images/failure.svg';
 import "./styles/InfoToolTip.css";
 
-function InfoToolTip(props) {
+function InfoToolTip({ isOpen, onClose, registeredIn, titleOfRegisterPopup }) {
   return (
-    <div className={`popup ${props.isOpen ? 'popup_opened' : ''} `}>
+    <div className={`popup ${ isOpen ? 'popup_opened' : '' } `}>
       <div className="popup-info">
-        <button className="popup__close-btn" type="button" aria-label="закрыть" onClick={props.onClose}></button>
-        <img className='popup__icon' src={props.registeredIn ? iconYes : iconNo} alt="Иконка" />
-        <h3>{props.registerText}</h3>
+      <button 
+        type="button" 
+        className="popup__close-btn" 
+        onClick={ onClose }
+      />
+        <img 
+          className='popup__icon' 
+          src={ 
+            registeredIn 
+            ? successIcon 
+            : failureIcon 
+          } 
+          alt="Иконка" 
+        />
+        <h3>{ titleOfRegisterPopup }</h3>
       </div>
     </div>
   )

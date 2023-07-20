@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as auth from '../utils/auth.js';
-import './styles/Login.css';
+import './styles/Auth.css';
 
-function Register(props) {
+function Register({ handleRegister }) {
     const [formValue, setFormValue] = useState({
       email: '',
       password: ''
@@ -26,23 +26,44 @@ function Register(props) {
       auth.register(email, password)
         .then((res) => {
           if (res) {
-            console.log(res)
-            props.handleRegister(true);
-            navigate('/sign-in', {replace: true});
+            handleRegister(true);
+            navigate('/sign-in', { replace: true });
           } else {
-            props.handleRegister(false);
+            handleRegister(false);
           }
         })
-        .catch((err) => {console.log(err)})
+        .catch((err) => { console.log(err) })
     }
   
     return (
-      <form className="login__form" name="register-form" onSubmit={handleSubmit}>
-        <h3 className="login__title">Регистрация</h3>
-        <input className="login__input" id="email" name="email" value={formValue.email} placeholder="Email" type="email" onChange={handleChange} required />
-        <input className="login__input" id="password" name="password" value={formValue.password} placeholder="Пароль" type="password" onChange={handleChange} required />
-        <button className="login__save-button">Зарегистрироваться</button>
-        <Link to="/sign-in" className="login__link">Уже зарегистрированы? Войти</Link>
+      <form 
+        className="auth__form" 
+        name="register-form" 
+        onSubmit={ handleSubmit }
+      >
+        <h3 className="auth__title">Регистрация</h3>
+        <input 
+            className="auth__input" 
+            id="email" 
+            name="email" 
+            value={ formValue.email } 
+            placeholder="Email" 
+            type="email" 
+            onChange={ handleChange } 
+            required 
+        />
+        <input 
+            className="auth__input" 
+            id="password" 
+            name="password" 
+            value={ formValue.password } 
+            placeholder="Пароль" 
+            type="password" 
+            onChange={ handleChange } 
+            required 
+        />
+        <button className="auth__save-btn">Зарегистрироваться</button>
+        <Link to="/sign-in" className="auth__link">Уже зарегистрированы? Войти</Link>
       </form>
     )
   }

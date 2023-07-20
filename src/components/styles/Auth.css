@@ -1,4 +1,4 @@
-.login__form {
+.auth__form {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -6,7 +6,7 @@
     max-width: 358px;
 }
 
-.login__title {
+.auth__title {
     text-align: center;
     color: #FFF;
     font-weight: 900;
@@ -16,7 +16,7 @@
     margin: 0 0 50px;
 }
 
-.login__save-button {
+.auth__save-btn {
     background: #fff;
     color: #000;
     font-weight: 400;
@@ -30,11 +30,11 @@
     width: 100%;
 }
   
-  .login__save-button:hover {
+.auth__save-btn:hover {
     opacity: 0.85;
 }
 
-.login__link {
+.auth__link {
     color: #FFF;
     text-align: center;
     font-weight: 400;
@@ -47,11 +47,11 @@
   
 }
   
-  .login__link:hover {
+.auth__link:hover {
     opacity: 0.6;
 }
 
-.login__input {
+.auth__input {
     color: #fff;
     background: #000;
     border: 0;
@@ -61,6 +61,6 @@
     font-size: 14px;
 }
   
-  .login__input:first-of-type {
+.auth__input:first-of-type {
     margin-bottom: 28px;
 }

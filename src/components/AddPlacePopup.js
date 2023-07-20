@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({isAddPlacePopupOpen, onClose, isLoading, onAddPlace}) {
+function AddPlacePopup({isOpen, onClose, isLoading, onAddPlace}) {
   const [card, setCard] = useState({
     name: "",
     link: "",
@@ -9,7 +9,7 @@ function AddPlacePopup({isAddPlacePopupOpen, onClose, isLoading, onAddPlace}) {
 
   useEffect(() => {
     setCard({ name: "", link: "" });
-  }, [isAddPlacePopupOpen]);
+  }, [isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ function AddPlacePopup({isAddPlacePopupOpen, onClose, isLoading, onAddPlace}) {
     <PopupWithForm
       id="cards" 
       title="Новое место" 
-      isOpen={isAddPlacePopupOpen} 
+      isOpen={isOpen} 
       onClose={onClose} 
       isLoading={isLoading}
       onSubmit={handleSubmit}
