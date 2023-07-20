@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import Header from './Header';
 import Main from './Main';
@@ -221,6 +221,7 @@ const App = () => {
           } 
         />
         <Route path="/" element={ <ProtectedRoute 
+          loggedIn={ loggedIn }
           element={ (props) => (
             <Main
             { ...props }
@@ -233,7 +234,7 @@ const App = () => {
             onCardDelete={ handleCardDelete }
             />
           )}
-          loggedIn={ loggedIn } />
+        />
       }
     />
       </Routes>
