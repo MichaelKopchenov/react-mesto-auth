@@ -31,7 +31,6 @@ function Header ({ userData, handleLogin, loggedIn }) {
 
   function wayBack() {
     localStorage.removeItem('token');
-    handleLogin(false)
     navigate('/sign-in', { replace: true });
   }
 

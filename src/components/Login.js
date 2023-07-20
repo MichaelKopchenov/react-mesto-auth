@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as auth from '../utils/auth.js';
 import './styles/Auth.css';
 
-function Login({ setUserData, handleLogin }) {
+function Login({ setUserData, handleLogin, closeAllPopups }) {
     const [formValue, setFormValue] = useState({
       email: '',
       password: ''
@@ -23,14 +23,17 @@ function Login({ setUserData, handleLogin }) {
     const handleSubmit = (e) => {
       e.preventDefault();
       auth.login(formValue.email, formValue.password)
-        .then((data) => {
-          if (data.token) {
+        .then((res) => {
+          if (res) {
             setUserData({
               email: formValue.email
             })
             setFormValue({ email: '', password: '' });
             handleLogin(true);
             navigate('/', { replace: true });
+          } else {
+            handleLogin(false)
+            closeAllPopups(true)
           }
         })
         .catch((err) => { console.log(err) })

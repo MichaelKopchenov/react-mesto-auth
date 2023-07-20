@@ -271,6 +271,7 @@ const App = () => {
       <InfoToolTip 
         titleOfRegisterPopup={ titleOfRegisterPopup } 
         registeredIn={ registeredIn } 
+        loggedIn={ loggedIn }
         isOpen={ isRegisterPopupOpen } 
         onClose={ closeAllPopups } 
       />
