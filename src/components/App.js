@@ -9,6 +9,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import SaveContext from '../contexts/saveContext';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
@@ -25,6 +26,7 @@ const App = () => {
   const [selectedCard, setSelectedCard] = useState({});
   const [userData, setUserData] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+  const [isSave, setIsSave] = useState(false)
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -198,12 +200,13 @@ const App = () => {
 
   return (
     <CurrentUserContext.Provider value={ currentUser }>
+      <SaveContext.Provider value={isSave}>
       <Header 
         userData={ userData } 
         loggedIn={ loggedIn } 
         handleLogin={ handleLogin } 
       />
-      <HashRouter>
+
       <Routes>
         <Route 
           path="/sign-in" 
@@ -239,7 +242,7 @@ const App = () => {
       }
     />
       </Routes>
-    </HashRouter>
+      </SaveContext.Provider>
 
       <Footer/>
 
