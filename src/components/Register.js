@@ -28,11 +28,12 @@ function Register({ handleRegister }) {
           if (res) {
             handleRegister(true);
             navigate('/sign-in', { replace: true });
-          } else {
-            handleRegister(false);
           }
         })
-        .catch((err) => { console.log(err) })
+        .catch((err) => { 
+          console.log(err);
+          handleRegister(false);
+         })
     }
   
     return (

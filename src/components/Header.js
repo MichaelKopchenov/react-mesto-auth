@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.svg';
 import './styles/Header.css'
 
-function Header ({ userData, handleLogin, loggedIn }) {
+function Header ({ userData, loggedIn }) {
   const [email, setEmail] = useState('')
 
   const location = useLocation();

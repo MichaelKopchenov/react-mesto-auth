@@ -1,9 +1,11 @@
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
 export function checkResponse(res) {
-   if (res.ok) { 
-    return res.json(); 
-}
+  if (res.ok) {
+    return res.json();
+  } else {
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
 }
 
 export const register = async (email, password) => {
@@ -13,7 +15,10 @@ export const register = async (email, password) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ 
+      email, 
+      password 
+    })
   })
     .then(checkResponse)
 }
@@ -25,9 +30,20 @@ export const login = async (email, password) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ 
+      email, 
+      password 
+    })
   })
   .then(checkResponse)
+  .then((data) => {
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      return data;
+    } else {
+      return;
+    }
+  })
 }
 
 export const checkToken = async (token) => {
@@ -36,7 +52,7 @@ export const checkToken = async (token) => {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${ token }`
+      'Authorization': `Bearer ${ localStorage.getItem('token') }`
     }
   })
   .then(checkResponse)

@@ -21,6 +21,7 @@ const App = () => {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isPicturePopupOpen, setIsPicturePopupOpen] = useState(false);
   const [isRegisterPopupOpen, setIsRegisterPopupOpen] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [registeredIn, setRegisteredIn] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [userData, setUserData] = useState({});
@@ -34,6 +35,7 @@ const App = () => {
   const token = localStorage.getItem('token');
 
   const titleOfRegisterPopup = registeredIn ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.';
+  const titleOfLoginPopup = loggedIn ? 'Добро пожаловать!' : 'Что-то пошло не так! Попробуйте ещё раз.';
 
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isPicturePopupOpen;
 
@@ -71,6 +73,7 @@ const App = () => {
   }, []);
 
   function handleLogin(isLogin) {
+    setIsLoginPopupOpen(true);
     setLoggedIn(isLogin);
   };
 
@@ -106,6 +109,7 @@ const App = () => {
     setIsAddPlacePopupOpen(false);
     setIsPicturePopupOpen(false);
     setIsRegisterPopupOpen(false);
+    setIsLoginPopupOpen(false)
   };
 
   function handleTokenCheck() {
@@ -270,9 +274,15 @@ const App = () => {
 
       <InfoToolTip 
         titleOfRegisterPopup={ titleOfRegisterPopup } 
-        registeredIn={ registeredIn } 
-        loggedIn={ loggedIn }
+        registeredIn={ registeredIn }
         isOpen={ isRegisterPopupOpen } 
+        onClose={ closeAllPopups } 
+      />
+
+      <InfoToolTip 
+        titleOfLoginPopup={ titleOfLoginPopup } 
+        loggedIn={ loggedIn }
+        isOpen={ isLoginPopupOpen } 
         onClose={ closeAllPopups } 
       />
     </CurrentUserContext.Provider>
